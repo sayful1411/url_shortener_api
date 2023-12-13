@@ -1,0 +1,9 @@
+1. folder and version structure
+    - controller
+    - request
+    - resource
+
+2. api route prefix
+3. setup AuthController
+    - StoreUserRequest
+    - LoginUserRequest
