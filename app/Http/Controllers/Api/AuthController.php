@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Api\V1\LoginUserRequest;
-use App\Http\Requests\Api\V1\StoreUserRequest;
+use App\Http\Requests\Api\LoginUserRequest;
+use App\Http\Requests\Api\StoreUserRequest;
 
 class AuthController extends Controller
 {
@@ -18,7 +18,8 @@ class AuthController extends Controller
         User::create($validated);
 
         return response()->json([
-            "message" => "registration success"
+            'status' => 'success',
+            "message" => "User registration successful"
         ],Response::HTTP_CREATED);
     }
 
@@ -27,14 +28,16 @@ class AuthController extends Controller
 
         if(!Auth::attempt($validated)){
             return response()->json([
+                'status' => 'error',
                 "message" => "login credentials not match"
             ],Response::HTTP_UNAUTHORIZED);
         }
-
-        $token = $request->user()->createToken("token");
+        $tokenName = env('TOKEN_NAME', 'token');
+        $token = $request->user()->createToken($tokenName);
 
         return response()->json([
-            'message' => 'login success',
+            'status' => 'success',
+            'message' => 'Successfully loggedIn',
             'token' => $token->plainTextToken,
             'token_type' => 'Bearer'
         ]);

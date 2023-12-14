@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\V1\UrlController;
 
 // ==========
 // Version 1
@@ -14,5 +15,8 @@ Route::prefix('v1')->group(function () {
         // auth
         Route::post('/logout', [AuthController::class, 'logout']);
 
+        Route::get('/urls', [UrlController::class, 'index']);
+        Route::post('/urls', [UrlController::class, 'store']);
+        Route::get('{shortUrl}', [UrlController::class, 'redirectToOriginalUrl']);
     });
 });
