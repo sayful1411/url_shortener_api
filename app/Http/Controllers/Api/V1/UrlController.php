@@ -16,7 +16,7 @@ class UrlController extends Controller
 {
     public function index(Request $request)
     {
-        $urls = Url::paginate(10);
+        $urls = Url::where('user_id', $request->user()->id)->paginate(10);
 
         // return  UrlResource::collection($urls);
         return  new UrlCollection($urls);
@@ -53,18 +53,18 @@ class UrlController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    public function redirectToOriginalUrl($shortUrl)
+    public function redirectToOriginalUrl(Request $request, $shortUrl)
     {
-        $user_id = Auth::user()->id;
         $appUrl = env('APP_URL');
-        $url = Url::where('user_id', $user_id)
-                    ->where('short_code', $shortUrl)
-                    ->firstOrFail();
+        $url = Url::where('short_code', $shortUrl)->firstOrFail();
 
-        // return redirect($url->original_url);
-        return response()->json([
-            'status' => 'success',
-            'redirect_url' => $appUrl . '/' . $url->original_url
-        ]);
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => 'success',
+                'redirect_url' => $appUrl . '/' . $url->original_url
+            ]);
+        }
+
+        return redirect($url->original_url);
     }
 }
