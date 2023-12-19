@@ -16,4 +16,8 @@ class Url extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function url_visit(){
+        return $this->hasOne(UrlVisit::class);
+    }
 }

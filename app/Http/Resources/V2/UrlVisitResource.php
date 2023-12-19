@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\V1;
+namespace App\Http\Resources\V2;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UrlResource extends JsonResource
+class UrlVisitResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,7 @@ class UrlResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'user' => new UserResource($this->whenLoaded('user')),
-            'short_code' => $this->short_code,
-            'original_url' => $this->original_url
+            'visitor_count' => $this->visitor_count,
         ];
     }
 }
