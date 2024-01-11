@@ -23,7 +23,7 @@ class UrlController extends Controller
     {
         $validatedData = $request->validated();
 
-        $appUrl = env('APP_URL');
+        $appUrl = config('app.name');
         $longUrl = Url::where('original_url', $validatedData['original_url'])->exists();
 
         // check if original URL exists for given URL
@@ -52,7 +52,7 @@ class UrlController extends Controller
 
     public function redirectToOriginalUrl(Request $request, $shortUrl)
     {
-        $appUrl = env('APP_URL');
+        $appUrl = config('app.name');
         $url = Url::where('short_code', $shortUrl)->firstOrFail();
 
         if ($request->expectsJson()) {
